@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1,
+    "nombre": "Cesar",
+    "edad": 23,
+    "correo": "cesar@gmail.com",
+    "numCuenta": "10-2003-12449",
+    "grado": 9,
+    "creditos": 8
+  },
+  {
+    "id": 2,
+    "nombre": "Messi",
+    "edad": 39,
+    "numCuenta": "10-1986-10311",
+    "grado": 9,
+    "creditos": 0
+  },
+  {
+    "id": 3,
+    "nombre": "Vini",
+    "edad": 23,
+    "correo": "vinijr@gmail.com",
+    "grado": 8,
+    "creditos": 0
+  },
+  {
+    "id": 4,
+    "nombre": "bellingham",
+    "edad": 21,
+    "numCuenta": "15-2004-10805",
+    "grado": 5,
+    "creditos": 3
+  },
+  {
+    "id": 5,
+    "nombre": "Cristiano",
+    "edad": 41,
+    "correo": "cr7@gmail.com",
+    "grado": 6,
+    "creditos": 0
+  },
+  {
+    "id": 6,
+    "nombre": "mbappe",
+    "edad": 27,
+    "grado": 4,
+    "creditos": 0
+  },
+  {
+    "id": 7,
+    "nombre": "pedro picapiedra",
+    "edad": 32,
+    "correo": "pedro@gmail.com",
+    "numCuenta": "88-1999-20134",
+    "grado": 9,
+    "creditos": 5
+  },
+  {
+    "id": 8,
+    "nombre": "haaland",
+    "edad": 26,
+    "numCuenta": "09-2000-45782",
+    "grado": 7,
+    "creditos": 9
+  },
+  {
+    "id": 9,
+    "nombre": "asas",
+    "edad": 23,
+    "grado": 7,
+    "creditos": 5
+  },
+  {
+    "id": 10,
+    "nombre": "Cubarsi",
+    "edad": 19,
+    "grado": 1,
+    "creditos": 0
+  },
+  {
+    "id": 11,
+    "nombre": "Ferran",
+    "edad": 25,
+    "correo": "ferrantorres@gmail.com",
+    "numCuenta": "07-2000-07112",
+    "grado": 7,
+    "creditos": 8
+  }
+]
