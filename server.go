@@ -15,10 +15,21 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
+
+var estudianteRepo estudiantes.Repositorio
 
 func main() {
 	if len(os.Args) > 1 && os.Args[1] == "api" {
+		db, err := iniciarBaseDatos()
+		if err != nil {
+			fmt.Println("no se pudo iniciar la base de datos:", err)
+			return
+		}
+		estudianteRepo = storage.NewSqliteEstudianteRepository(db)
+
 		e := echo.New()
 		e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 			AllowOrigins: []string{"http://localhost:8080", "http://localhost:8081", "http://127.0.0.1:8080", "http://127.0.0.1:8081"},
@@ -35,6 +46,26 @@ func main() {
 
 	reader := bufio.NewReader(os.Stdin)
 	handlers.EjecutarMenu(reader)
+}
+
+func iniciarBaseDatos() (*gorm.DB, error) {
+	db, err := gorm.Open(sqlite.Open("estudiantes.db"), &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+
+	if err := db.AutoMigrate(&models.Estudiante{}); err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
+func getEstudianteRepo() estudiantes.Repositorio {
+	if estudianteRepo == nil {
+		estudianteRepo = storage.NewArchivoEstudianteRepository(storage.ArchivoEstudiantes)
+	}
+	return estudianteRepo
 }
 
 func ConfigurarRutas(e *echo.Echo) {
@@ -58,8 +89,7 @@ func HealthCheck(c echo.Context) error {
 }
 
 func ListarEstudiantesAPI(c echo.Context) error {
-	repo := storage.NewArchivoEstudianteRepository(storage.ArchivoEstudiantes)
-	gestor := estudiantes.NewGestor(repo)
+	gestor := estudiantes.NewGestor(getEstudianteRepo())
 	return c.JSON(http.StatusOK, gestor.Listar())
 }
 
@@ -90,8 +120,7 @@ func CrearEstudianteAPI(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "los créditos no pueden ser negativos")
 	}
 
-	repo := storage.NewArchivoEstudianteRepository(storage.ArchivoEstudiantes)
-	gestor := estudiantes.NewGestor(repo)
+	gestor := estudiantes.NewGestor(getEstudianteRepo())
 	estudiante := gestor.Registrar(models.Estudiante{
 		Nombre:    nombre,
 		Edad:      req.Edad,
@@ -111,8 +140,7 @@ func ObtenerEstudianteAPI(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "id inválido")
 	}
 
-	repo := storage.NewArchivoEstudianteRepository(storage.ArchivoEstudiantes)
-	gestor := estudiantes.NewGestor(repo)
+	gestor := estudiantes.NewGestor(getEstudianteRepo())
 	if estudiante, ok := gestor.BuscarPorID(id); ok {
 		return c.JSON(http.StatusOK, estudiante)
 	}
@@ -127,8 +155,7 @@ func AvanzarEstudianteAPI(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "id inválido")
 	}
 
-	repo := storage.NewArchivoEstudianteRepository(storage.ArchivoEstudiantes)
-	gestor := estudiantes.NewGestor(repo)
+	gestor := estudiantes.NewGestor(getEstudianteRepo())
 	if estudiante, ok, err := gestor.Avanzar(id); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	} else if ok {

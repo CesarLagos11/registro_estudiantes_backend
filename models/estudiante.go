@@ -1,7 +1,7 @@
 package models
 
 type Estudiante struct {
-	ID        int     `json:"id"`
+	ID        int     `json:"id" gorm:"primaryKey;autoIncrement"`
 	Nombre    string  `json:"nombre"`
 	Edad      *int    `json:"edad,omitempty"`
 	Correo    *string `json:"correo,omitempty"`
