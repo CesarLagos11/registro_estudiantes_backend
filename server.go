@@ -58,6 +58,8 @@ func iniciarBaseDatos() (*gorm.DB, error) {
 		return nil, err
 	}
 
+	storage.MigrarDatosDesdeJSON(db)
+
 	return db, nil
 }
 
